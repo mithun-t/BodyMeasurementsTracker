@@ -1,0 +1,42 @@
+# .NET Core
+bin/
+obj/
+
+# User-specific files
+.vs/
+.vscode/
+.idea/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows Installer files (for Visual Studio)
+vshost.exe
+vshost.exe.config
+
+# .NET Core tools
+.dnx/
+.dnu/
+packages/
+
+# JetBrains Rider
+.idea/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# macOS
+.DS_Store
+
+# Linux
+*~ 
+*.swp

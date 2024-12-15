@@ -1,0 +1,6 @@
+@BodyMeasurementsTracker_HostAddress = http://localhost:5147
+
+GET {{BodyMeasurementsTracker_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

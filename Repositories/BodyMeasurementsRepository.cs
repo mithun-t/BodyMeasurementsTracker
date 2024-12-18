@@ -1,49 +1,47 @@
-// Repositories/BodyMeasurementsRepository.cs
 using BodyMeasurementsTracker.Data;
 using BodyMeasurementsTracker.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BodyMeasurementsTracker.Repositories
 {
-    public class BodyMeasurementsRepository : IBodyMeasurementsRepository
+    public class BodyMeasurementRepository : IBodyMeasurementRepository
     {
         private readonly AppDbContext _context;
 
-        public BodyMeasurementsRepository(AppDbContext context)
+        public BodyMeasurementRepository(AppDbContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<BodyMeasurement>> GetAllAsync()
+        public async Task AddBodyMeasurementAsync(BodyMeasurement measurement)
         {
-            return await _context.BodyMeasurements.ToListAsync();
-        }
-
-        public async Task<BodyMeasurement> GetByIdAsync(int id)
-        {
-            return await _context.BodyMeasurements.FirstOrDefaultAsync(b => b.Id == id);
-        }
-
-        public async Task AddAsync(BodyMeasurement bodyMeasurement)
-        {
-            await _context.BodyMeasurements.AddAsync(bodyMeasurement);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdateAsync(BodyMeasurement bodyMeasurement)
-        {
-            _context.BodyMeasurements.Update(bodyMeasurement);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            var bodyMeasurement = await GetByIdAsync(id);
-            if (bodyMeasurement != null)
+            // Validate that the user exists
+            var userExists = await _context.Users.AnyAsync(u => u.Id == measurement.UserId);
+            if (!userExists)
             {
-                _context.BodyMeasurements.Remove(bodyMeasurement);
-                await _context.SaveChangesAsync();
+                throw new InvalidOperationException("User does not exist.");
             }
+
+            measurement.Date = DateTime.UtcNow; // Set current date
+            await _context.BodyMeasurements.AddAsync(measurement);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<BodyMeasurement>> GetBodyMeasurementsByUserIdAsync(int userId)
+        {
+            // Validate that the user exists
+            var userExists = await _context.Users.AnyAsync(u => u.Id == userId);
+            if (!userExists)
+            {
+                throw new InvalidOperationException("User does not exist.");
+            }
+
+            return await _context.BodyMeasurements
+                .Where(bm => bm.UserId == userId)
+                .OrderByDescending(bm => bm.Date)
+                .ToListAsync();
         }
     }
 }

@@ -15,8 +15,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Register the Repository and Service layers
-builder.Services.AddScoped<IBodyMeasurementsRepository, BodyMeasurementsRepository>();
-builder.Services.AddScoped<BodyMeasurementsService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IBodyMeasurementRepository, BodyMeasurementRepository>();
+builder.Services.AddScoped<BodyMeasurementService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();
 

@@ -1,16 +1,12 @@
-// Repositories/IBodyMeasurementsRepository.cs
 using BodyMeasurementsTracker.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BodyMeasurementsTracker.Repositories
 {
-    public interface IBodyMeasurementsRepository
+    public interface IBodyMeasurementRepository
     {
-        Task<IEnumerable<BodyMeasurement>> GetAllAsync();
-        Task<BodyMeasurement> GetByIdAsync(int id);
-        Task AddAsync(BodyMeasurement bodyMeasurement);
-        Task UpdateAsync(BodyMeasurement bodyMeasurement);
-        Task DeleteAsync(int id);
+        Task AddBodyMeasurementAsync(BodyMeasurement measurement);
+        Task<List<BodyMeasurement>> GetBodyMeasurementsByUserIdAsync(int userId);
     }
 }

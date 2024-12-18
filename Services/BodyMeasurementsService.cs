@@ -1,4 +1,3 @@
-// Services/BodyMeasurementsService.cs
 using BodyMeasurementsTracker.Models;
 using BodyMeasurementsTracker.Repositories;
 using System.Collections.Generic;
@@ -6,38 +5,23 @@ using System.Threading.Tasks;
 
 namespace BodyMeasurementsTracker.Services
 {
-    public class BodyMeasurementsService
+    public class BodyMeasurementService
     {
-        private readonly IBodyMeasurementsRepository _repository;
+        private readonly IBodyMeasurementRepository _repository;
 
-        public BodyMeasurementsService(IBodyMeasurementsRepository repository)
+        public BodyMeasurementService(IBodyMeasurementRepository repository)
         {
             _repository = repository;
         }
 
-        public async Task<IEnumerable<BodyMeasurement>> GetAllAsync()
+        public async Task SaveBodyMeasurementAsync(BodyMeasurement measurement)
         {
-            return await _repository.GetAllAsync();
+            await _repository.AddBodyMeasurementAsync(measurement);
         }
 
-        public async Task<BodyMeasurement> GetByIdAsync(int id)
+        public async Task<List<BodyMeasurement>> GetBodyMeasurementsByUserIdAsync(int userId)
         {
-            return await _repository.GetByIdAsync(id);
-        }
-
-        public async Task AddAsync(BodyMeasurement bodyMeasurement)
-        {
-            await _repository.AddAsync(bodyMeasurement);
-        }
-
-        public async Task UpdateAsync(BodyMeasurement bodyMeasurement)
-        {
-            await _repository.UpdateAsync(bodyMeasurement);
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            await _repository.DeleteAsync(id);
+            return await _repository.GetBodyMeasurementsByUserIdAsync(userId);
         }
     }
 }

@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace BodyMeasurementsTracker.Models
 {
     public class BodyMeasurement
@@ -17,5 +20,11 @@ namespace BodyMeasurementsTracker.Models
         public float? Thighs { get; set; }
         public float? Calf { get; set; }
         public string? ProgressPicture { get; set; }
+
+        // Add UserId for Foreign Key
+        public int UserId { get; set; }
+
+        [ForeignKey("UserId")]
+        public User User { get; set; } = null!;
     }
 }

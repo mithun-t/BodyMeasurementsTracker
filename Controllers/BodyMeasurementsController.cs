@@ -1,63 +1,58 @@
-// Controllers/BodyMeasurementsController.cs
 using BodyMeasurementsTracker.Models;
 using BodyMeasurementsTracker.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BodyMeasurementsTracker.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BodyMeasurementsController : ControllerBase
+    public class BodyMeasurementController : ControllerBase
     {
-        private readonly BodyMeasurementsService _service;
+        private readonly BodyMeasurementService _bodyMeasurementService;
 
-        public BodyMeasurementsController(BodyMeasurementsService service)
+        public BodyMeasurementController(BodyMeasurementService bodyMeasurementService)
         {
-            _service = service;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Get()
-        {
-            var measurements = await _service.GetAllAsync();
-            return Ok(measurements);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            var measurement = await _service.GetByIdAsync(id);
-            if (measurement == null)
-                return NotFound();
-
-            return Ok(measurement);
+            _bodyMeasurementService = bodyMeasurementService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] BodyMeasurement bodyMeasurement)
+        public async Task<IActionResult> SaveBodyMeasurement([FromBody] BodyMeasurement measurement)
         {
-            if (bodyMeasurement == null)
-                return BadRequest();
+            if (measurement == null)
+            {
+                return BadRequest("Body measurement data is required.");
+            }
 
-            await _service.AddAsync(bodyMeasurement);
-            return CreatedAtAction(nameof(Get), new { id = bodyMeasurement.Id }, bodyMeasurement);
+            try
+            {
+                await _bodyMeasurementService.SaveBodyMeasurementAsync(measurement);
+                return Ok("Body measurement saved successfully.");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] BodyMeasurement bodyMeasurement)
+        [HttpGet]
+        public async Task<ActionResult<List<BodyMeasurement>>> GetBodyMeasurementsByUserId([FromQuery] int userId)
         {
-            if (bodyMeasurement == null || bodyMeasurement.Id != id)
-                return BadRequest();
+            if (userId <= 0)
+            {
+                return BadRequest("Invalid user ID.");
+            }
 
-            await _service.UpdateAsync(bodyMeasurement);
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            await _service.DeleteAsync(id);
-            return NoContent();
+            try
+            {
+                var measurements = await _bodyMeasurementService.GetBodyMeasurementsByUserIdAsync(userId);
+                return Ok(measurements);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

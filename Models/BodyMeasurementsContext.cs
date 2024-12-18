@@ -7,5 +7,7 @@ namespace BodyMeasurementsTracker.Models
         public BodyMeasurementsContext(DbContextOptions<BodyMeasurementsContext> options) : base(options) { }
 
         public DbSet<BodyMeasurement> BodyMeasurements { get; set; }
+        public DbSet<User> Users { get; set; }
+
     }
 }

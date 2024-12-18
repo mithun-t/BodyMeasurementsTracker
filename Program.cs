@@ -10,6 +10,17 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
+// Configure CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000") // React app's URL
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 // Register the AppDbContext for dependency injection
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -22,6 +33,9 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();
+
+// Use CORS
+app.UseCors("AllowSpecificOrigin");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

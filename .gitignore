@@ -39,4 +39,7 @@ ScaffoldingReadMe.txt
 
 # Linux
 *~ 
-*.swp
+*.swp 
+
+# Migrations for Entity Framework
+Migrations/

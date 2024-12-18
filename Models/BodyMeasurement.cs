@@ -24,7 +24,5 @@ namespace BodyMeasurementsTracker.Models
         // Add UserId for Foreign Key
         public int UserId { get; set; }
 
-        [ForeignKey("UserId")]
-        public User User { get; set; } = null!;
     }
 }

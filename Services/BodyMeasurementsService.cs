@@ -23,5 +23,15 @@ namespace BodyMeasurementsTracker.Services
         {
             return await _repository.GetBodyMeasurementsByUserIdAsync(userId);
         }
+
+        public async Task UpdateBodyMeasurementAsync(int id, BodyMeasurement updatedMeasurement)
+        {
+            await _repository.UpdateBodyMeasurementAsync(id, updatedMeasurement);
+        }
+
+        public async Task DeleteBodyMeasurementAsync(int id)
+        {
+            await _repository.DeleteBodyMeasurementAsync(id);
+        }
     }
 }

@@ -54,5 +54,52 @@ namespace BodyMeasurementsTracker.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        // Update (Edit) Body Measurement
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateBodyMeasurement(int id, [FromBody] BodyMeasurement updatedMeasurement)
+        {
+            if (id <= 0 || updatedMeasurement == null)
+            {
+                return BadRequest("Invalid data provided.");
+            }
+
+            try
+            {
+                await _bodyMeasurementService.UpdateBodyMeasurementAsync(id, updatedMeasurement);
+                return Ok("Body measurement updated successfully.");
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound($"Body measurement with ID {id} not found.");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // Delete Body Measurement
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBodyMeasurement(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest("Invalid measurement ID.");
+            }
+
+            try
+            {
+                await _bodyMeasurementService.DeleteBodyMeasurementAsync(id);
+                return Ok("Body measurement deleted successfully.");
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound($"Body measurement with ID {id} not found.");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

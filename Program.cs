@@ -23,7 +23,7 @@ builder.Services.AddCors(options =>
 
 // Register the AppDbContext for dependency injection
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Register the Repository and Service layers
 builder.Services.AddScoped<IUserRepository, UserRepository>();

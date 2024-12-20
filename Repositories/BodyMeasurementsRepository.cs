@@ -43,5 +43,37 @@ namespace BodyMeasurementsTracker.Repositories
                 .OrderByDescending(bm => bm.Date)
                 .ToListAsync();
         }
+
+        public async Task UpdateBodyMeasurementAsync(int id, BodyMeasurement updatedMeasurement)
+        {
+            var existingMeasurement = await _context.BodyMeasurements.FindAsync(id);
+            if (existingMeasurement == null)
+            {
+                throw new KeyNotFoundException("Body measurement not found.");
+            }
+
+            // Update fields
+            existingMeasurement.Weight = updatedMeasurement.Weight;
+            existingMeasurement.BodyFat = updatedMeasurement.BodyFat;
+            existingMeasurement.Neck = updatedMeasurement.Neck;
+            existingMeasurement.Waist = updatedMeasurement.Waist;
+            existingMeasurement.Chest = updatedMeasurement.Chest;
+            existingMeasurement.Date = updatedMeasurement.Date;
+
+            _context.BodyMeasurements.Update(existingMeasurement);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteBodyMeasurementAsync(int id)
+        {
+            var measurement = await _context.BodyMeasurements.FindAsync(id);
+            if (measurement == null)
+            {
+                throw new KeyNotFoundException("Body measurement not found.");
+            }
+
+            _context.BodyMeasurements.Remove(measurement);
+            await _context.SaveChangesAsync();
+        }
     }
 }

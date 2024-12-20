@@ -48,7 +48,11 @@ namespace BodyMeasurementsTracker.Controllers
                 return Unauthorized("Invalid mobile number or password.");
             }
 
-            return Ok("Login successful.");
+            return Ok(new
+            {
+                Message = "Login successful.",
+                UserId = loggedInUser.Id
+            });
         }
     }
 }

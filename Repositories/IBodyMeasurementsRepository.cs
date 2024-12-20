@@ -8,5 +8,7 @@ namespace BodyMeasurementsTracker.Repositories
     {
         Task AddBodyMeasurementAsync(BodyMeasurement measurement);
         Task<List<BodyMeasurement>> GetBodyMeasurementsByUserIdAsync(int userId);
+        Task UpdateBodyMeasurementAsync(int id, BodyMeasurement updatedMeasurement);
+        Task DeleteBodyMeasurementAsync(int id);
     }
 }
